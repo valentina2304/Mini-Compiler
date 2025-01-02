@@ -9,6 +9,7 @@
     <RootNamespace>Tema2_LFC</RootNamespace>
     <AssemblyName>Tema2-LFC</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>11.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -46,7 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LanguageVisitor.cs" />
+    <Compile Include="myGrammarBaseVisitor.cs" />
+    <Compile Include="myGrammarLexer.cs" />
+    <Compile Include="myGrammarParser.cs" />
+    <Compile Include="myGrammarVisitor.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProgramData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
