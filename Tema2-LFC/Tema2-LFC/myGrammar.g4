@@ -1,14 +1,14 @@
 grammar myGrammar;
 
 options {
-    language = CSharp;
+	language = CSharp;
 }
 
 // Parser Rules
 declaration: type VARIABLE_NAME EQUALS value SEMICOLON;
 type: INTEGER_TYPE | FLOAT_TYPE | STRING_TYPE;
 value: INTEGER_VALUE | FLOAT_VALUE | STRING_VALUE;
- 
+
 //lexer rules
 
 INTEGER_TYPE: 'int';
