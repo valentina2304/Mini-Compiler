@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from c:/Users/palat/OneDrive/Documente/Desktop/Tema2-LFC/Tema2-LFC/myGrammar.g4 by ANTLR 4.13.1
+// Generated from c:/Users/40720/OneDrive/Desktop/FACULTATE/AN II/Limbaje formale si compilatoare/Tema2LFC/Tema2LFC/Tema2-LFC/Tema2-LFC/myGrammar.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -98,16 +98,6 @@ public partial class myGrammarParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_declaration; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ImyGrammarListener typedListener = listener as ImyGrammarListener;
-			if (typedListener != null) typedListener.EnterDeclaration(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ImyGrammarListener typedListener = listener as ImyGrammarListener;
-			if (typedListener != null) typedListener.ExitDeclaration(this);
-		}
 	}
 
 	[RuleVersion(0)]
@@ -149,16 +139,6 @@ public partial class myGrammarParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_type; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ImyGrammarListener typedListener = listener as ImyGrammarListener;
-			if (typedListener != null) typedListener.EnterType(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ImyGrammarListener typedListener = listener as ImyGrammarListener;
-			if (typedListener != null) typedListener.ExitType(this);
-		}
 	}
 
 	[RuleVersion(0)]
@@ -200,16 +180,6 @@ public partial class myGrammarParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_value; } }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			ImyGrammarListener typedListener = listener as ImyGrammarListener;
-			if (typedListener != null) typedListener.EnterValue(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			ImyGrammarListener typedListener = listener as ImyGrammarListener;
-			if (typedListener != null) typedListener.ExitValue(this);
-		}
 	}
 
 	[RuleVersion(0)]

@@ -13,8 +13,8 @@ public class Program
         try
         {
             //string code = "int nameThisIntWhateverYouWant = 18;";
-            //string code = "int nameThisStringWhateverYouWant = 45;";
-            string code = "float nameThisFloatWhateverYouWant = 3.14;";
+            string code = "int nameThisStringWhateverYouWant = 45;";
+            //string code = "float nameThisFloatWhateverYouWant = 3.14;";
             AntlrInputStream inputStream = new AntlrInputStream(code);
             myGrammarLexer ifConditionLexer = new myGrammarLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(ifConditionLexer);

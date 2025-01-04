@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from c:/Users/palat/OneDrive/Documente/Desktop/Tema2-LFC/Tema2-LFC/myGrammar.g4 by ANTLR 4.13.1
+// Generated from c:/Users/40720/OneDrive/Desktop/FACULTATE/AN II/Limbaje formale si compilatoare/Tema2LFC/Tema2LFC/Tema2-LFC/Tema2-LFC/myGrammar.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
