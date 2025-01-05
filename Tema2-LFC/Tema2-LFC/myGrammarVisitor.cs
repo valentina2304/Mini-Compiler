@@ -32,11 +32,107 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface ImyGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.declaration"/>.
+	/// Visit a parse tree produced by <see cref="myGrammarParser.program"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitDeclaration([NotNull] myGrammarParser.DeclarationContext context);
+	Result VisitProgram([NotNull] myGrammarParser.ProgramContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.globalVariable"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGlobalVariable([NotNull] myGrammarParser.GlobalVariableContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.function"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunction([NotNull] myGrammarParser.FunctionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.parameterList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameterList([NotNull] myGrammarParser.ParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.parameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameter([NotNull] myGrammarParser.ParameterContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlock([NotNull] myGrammarParser.BlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStatement([NotNull] myGrammarParser.StatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.variableDeclaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVariableDeclaration([NotNull] myGrammarParser.VariableDeclarationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignment([NotNull] myGrammarParser.AssignmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.ifStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfStatement([NotNull] myGrammarParser.IfStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.whileStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileStatement([NotNull] myGrammarParser.WhileStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.forStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForStatement([NotNull] myGrammarParser.ForStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.returnStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitReturnStatement([NotNull] myGrammarParser.ReturnStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionCall([NotNull] myGrammarParser.FunctionCallContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.argumentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArgumentList([NotNull] myGrammarParser.ArgumentListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression([NotNull] myGrammarParser.ExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.primary"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrimary([NotNull] myGrammarParser.PrimaryContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="myGrammarParser.type"/>.
 	/// </summary>
@@ -44,9 +140,21 @@ public interface ImyGrammarVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitType([NotNull] myGrammarParser.TypeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.value"/>.
+	/// Visit a parse tree produced by <see cref="myGrammarParser.assignmentOperator"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitValue([NotNull] myGrammarParser.ValueContext context);
+	Result VisitAssignmentOperator([NotNull] myGrammarParser.AssignmentOperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.operator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperator([NotNull] myGrammarParser.OperatorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="myGrammarParser.unaryOperator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryOperator([NotNull] myGrammarParser.UnaryOperatorContext context);
 }

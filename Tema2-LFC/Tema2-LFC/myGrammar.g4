@@ -4,22 +4,109 @@ options {
 	language = CSharp;
 }
 
-//parser rules
+// Parser Rules
+program: (globalVariable | function)* EOF;
 
-declaration: type VARIABLE_NAME EQUALS value SEMICOLON;
-type: INTEGER_TYPE | FLOAT_TYPE | STRING_TYPE;
-value: INTEGER_VALUE | FLOAT_VALUE | STRING_VALUE;
+globalVariable: type IDENTIFIER ('=' expression)? ';';
 
-//lexer rules
+function
+    : type IDENTIFIER '(' parameterList? ')' block
+    ;
 
-INTEGER_TYPE: 'int';
-FLOAT_TYPE: 'float';
-STRING_TYPE: 'string';
-EQUALS: '=';
-SEMICOLON: ';';
-INTEGER_VALUE: [0-9]+;
-FLOAT_VALUE: [0-9]+ '.' [0-9]+;
-STRING_VALUE: '"' .+? '"';
-VARIABLE_NAME: [a-zA-Z][a-zA-Z0-9]*;
+parameterList
+    : parameter (',' parameter)*
+    ;
 
+parameter: type IDENTIFIER;
+
+block: '{' statement* '}';
+
+statement
+    : variableDeclaration
+    | assignment
+    | ifStatement
+    | whileStatement
+    | forStatement
+    | returnStatement
+    | functionCall ';'
+    | block
+    ;
+
+variableDeclaration
+    : type IDENTIFIER ('=' expression)? ';'
+    ;
+
+assignment
+    : IDENTIFIER assignmentOperator expression ';'
+    ;
+
+ifStatement
+    : 'if' '(' expression ')' statement ('else' statement)?
+    ;
+
+whileStatement
+    : 'while' '(' expression ')' statement
+    ;
+
+forStatement
+    : 'for' '(' (variableDeclaration | assignment)? ';' expression? ';' expression? ')' statement
+    ;
+
+returnStatement
+    : 'return' expression? ';'
+    ;
+
+functionCall
+    : IDENTIFIER '(' argumentList? ')'
+    ;
+
+argumentList
+    : expression (',' expression)*
+    ;
+
+expression
+    : primary
+    | functionCall
+    | expression operator expression
+    | '(' expression ')'
+    | unaryOperator expression
+    ;
+
+primary
+    : IDENTIFIER
+    | INTEGER_LITERAL
+    | FLOAT_LITERAL
+    | STRING_LITERAL
+    | BOOLEAN_LITERAL
+    ;
+
+// Lexer Rules
+type: 'int' | 'float' | 'double' | 'string' | 'void';
+assignmentOperator: '=' | '+=' | '-=' | '*=' | '/=' | '%=';
+operator
+    : '+' | '-' | '*' | '/' | '%'    // arithmetic
+    | '==' | '!=' | '<' | '>' | '<=' | '>='  // relational
+    | '&&' | '||'                    // logical
+    ;
+unaryOperator: '++' | '--' | '!' | '-';
+
+// Tokens
+IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
+INTEGER_LITERAL: [0-9]+;
+FLOAT_LITERAL: [0-9]+ '.' [0-9]+;
+STRING_LITERAL: '"' (~["\r\n])* '"';
+BOOLEAN_LITERAL: 'true' | 'false';
+
+// Keywords
+IF: 'if';
+ELSE: 'else';
+WHILE: 'while';
+FOR: 'for';
+RETURN: 'return';
+
+// Comments to skip
+SINGLE_LINE_COMMENT: '//' ~[\r\n]* -> skip;
+MULTI_LINE_COMMENT: '/*' .*? '*/' -> skip;
+
+// Whitespace to skip
 WS: [ \t\r\n]+ -> skip;

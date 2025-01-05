@@ -4,33 +4,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 
 public class Program
 {
-    public static void Main()
+    public static void Main(string[] args)
+{
+    try
     {
-        try
+        // Citește codul sursă
+        string sourceCode = File.ReadAllText("input.in");
+        
+        // Creează lexerul și parserul
+        var inputStream = new AntlrInputStream(sourceCode);
+        var lexer = new myGrammarLexer(inputStream);
+        var tokens = new CommonTokenStream(lexer);
+        var parser = new myGrammarParser(tokens);
+        
+        // Analizează programul
+        var programContext = parser.program();
+        var visitor = new CompilerVisitor();
+        var result = visitor.Visit(programContext);
+        
+        // Salvează rezultatele
+        //SaveResults(result);
+        
+        // Afișează erorile dacă există
+        if (result.Errors.Any())
         {
-            //string code = "int nameThisIntWhateverYouWant = 18;";
-            string code = "int nameThisStringWhateverYouWant = 45;";
-            //string code = "float nameThisFloatWhateverYouWant = 3.14;";
-            AntlrInputStream inputStream = new AntlrInputStream(code);
-            myGrammarLexer ifConditionLexer = new myGrammarLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(ifConditionLexer);
-            myGrammarParser parser = new myGrammarParser(commonTokenStream);
-
-            myGrammarParser.DeclarationContext context = parser.declaration();
-            LanguageVisitor languageVisitor = new LanguageVisitor();
-            var result = languageVisitor.Visit(context);
-
-            Console.WriteLine($"The type of the variable is {result.Variables[0].VariableType.ToString()} and its value is {result.Variables[0].Value}");
+            Console.WriteLine("Erori găsite:");
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine($"Linia {error.Line}: {error.Message}");
+            }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Eroare: {ex.Message}");
+    }
+}
 
 }
