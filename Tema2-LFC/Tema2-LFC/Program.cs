@@ -9,27 +9,21 @@ public class Program
     {
         try
         {
-            // Citește codul sursă
             string sourceCode = File.ReadAllText("input.in");
 
-            // Creează lexerul și parserul
             var inputStream = new AntlrInputStream(sourceCode);
             var lexer = new BasicLanguageLexer(inputStream);
             var tokens = new CommonTokenStream(lexer);
             var parser = new BasicLanguageParser(tokens);
 
-            // Analizează programul
             var programContext = parser.program();
             var visitor = new CompilerVisitor();
             var result = visitor.Visit(programContext);
 
-            // Salvează tokens
             SaveTokens(tokens, "tokens.txt");
 
-            // Salvează rezultatele analizei
             SaveCompilerData(result);
 
-            // Afișează erorile dacă există
             if (result.Errors.Any())
             {
                 Console.WriteLine("Erori găsite:");
@@ -59,7 +53,6 @@ public class Program
 
     private static void SaveCompilerData(CompilerSymbols symbols)
     {
-        // Salvare variabile globale
         using (var writer = new StreamWriter("global_variables.txt"))
         {
             foreach (var variable in symbols.GlobalVariables)
@@ -69,7 +62,6 @@ public class Program
             }
         }
 
-        // Salvare funcții
         using (var writer = new StreamWriter("functions.txt"))
         {
             foreach (var function in symbols.Functions)
