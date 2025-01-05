@@ -205,44 +205,48 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
 
         return base.VisitExpr(context);
     }
+    private bool IsFunctionDeclared(string name)
+    {
+        return _symbols.Functions.Any(f => f.Name == name);
+    }
 
     public override CompilerSymbols VisitPrimaryExpr([NotNull] BasicLanguageParser.PrimaryExprContext context)
     {
-        if (context.IDENTIFIER() != null && context.expr() == null) // Not a function call
+        if (context.IDENTIFIER() != null)
         {
-            var varName = context.IDENTIFIER().GetText();
-            if (!IsVariableDeclared(varName))
-            {
-                AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
-                        $"Use of undeclared variable: {varName}");
-            }
-        }
-        else if (context.IDENTIFIER() != null) // Function call
-        {
-            var functionName = context.IDENTIFIER().GetText();
-            if (!_symbols.Functions.Any(f => f.Name == functionName))
-            {
-                AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
-                        $"Call to undefined function: {functionName}");
-            }
+            var name = context.IDENTIFIER().GetText();
 
-            var calledFunction = _symbols.Functions.FirstOrDefault(f => f.Name == functionName);
-            if (calledFunction != null)
+            // Verificăm apelurile de funcții
+            if (context.LPAREN() != null)  // Verificăm dacă este apel de funcție (are paranteze)
             {
-                var expectedArgs = calledFunction.Parameters.Count;
-                var providedArgs = context.expr() != null ? 1 : 0;
-
-                if (expectedArgs != providedArgs)
+                if (!IsFunctionDeclared(name))
                 {
                     AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
-                            $"Function {functionName} expects {expectedArgs} arguments but got {providedArgs}");
+                            $"Call to undefined function: {name}");
                 }
+                else
+                {
+                    var function = _symbols.Functions.First(f => f.Name == name);
+                    var expectedArgs = function.Parameters.Count;
+                    var providedArgs = context.exprList()?.expr().Length ?? 0;
+
+                    if (expectedArgs != providedArgs)
+                    {
+                        AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
+                                $"Function {name} expects {expectedArgs} arguments but got {providedArgs}");
+                    }
+                }
+            }
+            // Verificăm variabilele
+            else if (!IsVariableDeclared(name) && !IsFunctionDeclared(name))
+            {
+                AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
+                        $"Use of undeclared variable: {name}");
             }
         }
 
         return base.VisitPrimaryExpr(context);
     }
-
     private CompilerSymbols.Variable CreateVariable(BasicLanguageParser.TypeContext typeContext, string name, bool isGlobal, int line)
     {
         return new CompilerSymbols.Variable
@@ -269,6 +273,17 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
 
     private void ValidateInitialValue(CompilerSymbols.Variable variable, BasicLanguageParser.ExprContext expression)
     {
+        // Pentru expresii complexe, doar verificăm dacă variabilele folosite există
+        if (expression.GetText().Contains("+") ||
+            expression.GetText().Contains("-") ||
+            expression.GetText().Contains("*") ||
+            expression.GetText().Contains("/") ||
+            expression.GetText().Contains("("))
+        {
+            ValidateExpression(expression.logicalExpr());
+            return;
+        }
+
         var value = expression.GetText();
 
         try
@@ -276,30 +291,26 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
             switch (variable.VariableType)
             {
                 case CompilerSymbols.Variable.Type.Int:
-                    variable.InitialValue = int.Parse(value);
+                    if (int.TryParse(value, out int intValue))
+                        variable.InitialValue = intValue;
                     break;
                 case CompilerSymbols.Variable.Type.Float:
                 case CompilerSymbols.Variable.Type.Double:
-                    variable.InitialValue = double.Parse(value);
+                    if (double.TryParse(value, out double doubleValue))
+                        variable.InitialValue = doubleValue;
                     break;
                 case CompilerSymbols.Variable.Type.String:
-                    if (!value.StartsWith("\"") || !value.EndsWith("\""))
-                    {
-                        throw new Exception("String value must be enclosed in quotes");
-                    }
-                    variable.InitialValue = value.Trim('"');
+                    if (value.StartsWith("\"") && value.EndsWith("\""))
+                        variable.InitialValue = value.Trim('"');
                     break;
-                default:
-                    throw new Exception($"Cannot initialize type {variable.VariableType}");
             }
         }
         catch (Exception ex)
         {
             AddError(CompilerError.ErrorType.Semantic, expression.Start.Line,
-                    $"Invalid value for type {variable.VariableType}: {value} - {ex.Message}");
+                    $"Invalid value for type {variable.VariableType}: {value}");
         }
     }
-
     private void DetermineFunctionType(CompilerSymbols.Function function, BasicLanguageParser.FunctionDeclContext context)
     {
         if (function.Name.ToLower() == "main")
@@ -320,12 +331,20 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
 
     private void ValidateExpression(BasicLanguageParser.LogicalExprContext context)
     {
+        if (context == null) return;
+
         foreach (var identifier in context.GetTokens(BasicLanguageParser.IDENTIFIER))
         {
-            if (!IsVariableDeclared(identifier.GetText())) // Utilizare GetText()
+            var name = identifier.GetText();
+
+            // Verificăm dacă este nume de funcție
+            bool isFunction = _symbols.Functions.Any(f => f.Name == name);
+
+            // Dacă nu este funcție, verificăm dacă este variabilă declarată
+            if (!isFunction && !IsVariableDeclared(name))
             {
                 AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
-                        $"Use of undeclared variable: {identifier.GetText()}"); // Utilizare GetText()
+                        $"Use of undeclared variable: {name}");
             }
         }
     }
