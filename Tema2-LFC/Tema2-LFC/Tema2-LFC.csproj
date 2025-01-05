@@ -47,13 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicLanguageBaseListener.cs" />
+    <Compile Include="BasicLanguageBaseVisitor.cs" />
+    <Compile Include="BasicLanguageLexer.cs" />
+    <Compile Include="BasicLanguageListener.cs" />
+    <Compile Include="BasicLanguageParser.cs" />
+    <Compile Include="BasicLanguageVisitor.cs" />
     <Compile Include="LanguageVisitor.cs" />
-    <Compile Include="myGrammarBaseListener.cs" />
-    <Compile Include="myGrammarBaseVisitor.cs" />
-    <Compile Include="myGrammarLexer.cs" />
-    <Compile Include="myGrammarListener.cs" />
-    <Compile Include="myGrammarParser.cs" />
-    <Compile Include="myGrammarVisitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

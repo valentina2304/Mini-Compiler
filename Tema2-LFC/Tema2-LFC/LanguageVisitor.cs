@@ -2,17 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
+public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
 {
     private CompilerSymbols _symbols = new();
     private CompilerSymbols.Function? _currentFunction;
     private Stack<CompilerSymbols.ControlStructure> _controlStructureStack = new();
 
-    public override CompilerSymbols VisitProgram([NotNull] myGrammarParser.ProgramContext context)
+    public override CompilerSymbols VisitProgram([NotNull] BasicLanguageParser.ProgramContext context)
     {
         foreach (var child in context.children)
         {
@@ -22,11 +19,10 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
         return _symbols;
     }
 
-    public override CompilerSymbols VisitGlobalVariable([NotNull] myGrammarParser.GlobalVariableContext context)
+    public override CompilerSymbols VisitGlobalVariableDecl([NotNull] BasicLanguageParser.GlobalVariableDeclContext context)
     {
         var variable = CreateVariable(context.type(), context.IDENTIFIER().GetText(), true, context.Start.Line);
 
-        // Check for duplicate global variable
         if (_symbols.GlobalVariables.Any(v => v.Name == variable.Name))
         {
             AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
@@ -34,26 +30,25 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
             return _symbols;
         }
 
-        // If there's an initial value, validate and set it
-        if (context.expression() != null)
+        if (context.expr() != null)
         {
-            ValidateInitialValue(variable, context.expression());
+            ValidateInitialValue(variable, context.expr());
         }
 
         _symbols.GlobalVariables.Add(variable);
         return _symbols;
     }
 
-    public override CompilerSymbols VisitFunction([NotNull] myGrammarParser.FunctionContext context)
+    public override CompilerSymbols VisitFunctionDecl([NotNull] BasicLanguageParser.FunctionDeclContext context)
     {
+        var functionName = context.MAIN_FUN()?.GetText() ?? context.IDENTIFIER().GetText();
         var function = new CompilerSymbols.Function
         {
-            Name = context.IDENTIFIER().GetText(),
+            Name = functionName,
             DeclarationLine = context.Start.Line,
             ReturnType = ParseType(context.type().GetText())
         };
 
-        // Check for duplicate function
         if (_symbols.Functions.Any(f => f.Name == function.Name))
         {
             AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
@@ -63,16 +58,13 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
 
         _currentFunction = function;
 
-        // Visit parameters
-        if (context.parameterList() != null)
+        if (context.paramList() != null)
         {
-            Visit(context.parameterList());
+            Visit(context.paramList());
         }
 
-        // Visit function body
         Visit(context.block());
 
-        // Determine function type
         DetermineFunctionType(function, context);
 
         _symbols.Functions.Add(function);
@@ -81,13 +73,12 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
         return _symbols;
     }
 
-    public override CompilerSymbols VisitParameterList([NotNull] myGrammarParser.ParameterListContext context)
+    public override CompilerSymbols VisitParamList([NotNull] BasicLanguageParser.ParamListContext context)
     {
-        foreach (var param in context.parameter())
+        foreach (var param in context.param())
         {
             var parameter = CreateVariable(param.type(), param.IDENTIFIER().GetText(), false, param.Start.Line);
 
-            // Check for duplicate parameters
             if (_currentFunction.Parameters.Any(p => p.Name == parameter.Name))
             {
                 AddError(CompilerError.ErrorType.Semantic, param.Start.Line,
@@ -100,7 +91,7 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
         return _symbols;
     }
 
-    public override CompilerSymbols VisitVariableDeclaration([NotNull] myGrammarParser.VariableDeclarationContext context)
+    public override CompilerSymbols VisitVariableDecl([NotNull] BasicLanguageParser.VariableDeclContext context)
     {
         if (_currentFunction == null)
         {
@@ -111,7 +102,6 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
 
         var variable = CreateVariable(context.type(), context.IDENTIFIER().GetText(), false, context.Start.Line);
 
-        // Check for duplicate local variable
         if (_currentFunction.LocalVariables.Any(v => v.Name == variable.Name))
         {
             AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
@@ -119,17 +109,16 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
             return _symbols;
         }
 
-        // If there's an initial value, validate and set it
-        if (context.expression() != null)
+        if (context.expr() != null)
         {
-            ValidateInitialValue(variable, context.expression());
+            ValidateInitialValue(variable, context.expr());
         }
 
         _currentFunction.LocalVariables.Add(variable);
         return _symbols;
     }
 
-    public override CompilerSymbols VisitIfStatement([NotNull] myGrammarParser.IfStatementContext context)
+    public override CompilerSymbols VisitIfStatement([NotNull] BasicLanguageParser.IfStatementContext context)
     {
         var structure = new CompilerSymbols.ControlStructure
         {
@@ -138,90 +127,123 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
                    CompilerSymbols.ControlStructure.StructureType.If,
             StartLine = context.Start.Line,
             EndLine = context.Stop.Line,
-            Condition = context.expression().GetText()
+            Condition = context.expr().GetText()
         };
 
         _controlStructureStack.Push(structure);
         _currentFunction?.ControlStructures.Add(structure);
 
-        Visit(context.statement(0));
+        Visit(context.block(0));
         if (context.ELSE() != null)
         {
-            Visit(context.statement(1));
+            Visit(context.block(1));
         }
 
         _controlStructureStack.Pop();
         return _symbols;
     }
 
-    public override CompilerSymbols VisitWhileStatement([NotNull] myGrammarParser.WhileStatementContext context)
+    public override CompilerSymbols VisitWhileStatement([NotNull] BasicLanguageParser.WhileStatementContext context)
     {
         var structure = new CompilerSymbols.ControlStructure
         {
             Type = CompilerSymbols.ControlStructure.StructureType.While,
             StartLine = context.Start.Line,
             EndLine = context.Stop.Line,
-            Condition = context.expression().GetText()
+            Condition = context.expr().GetText()
         };
 
         _controlStructureStack.Push(structure);
         _currentFunction?.ControlStructures.Add(structure);
 
-        Visit(context.statement());
+        Visit(context.block());
 
         _controlStructureStack.Pop();
         return _symbols;
     }
 
-    public override CompilerSymbols VisitForStatement([NotNull] myGrammarParser.ForStatementContext context)
+    public override CompilerSymbols VisitForStatement([NotNull] BasicLanguageParser.ForStatementContext context)
     {
         var structure = new CompilerSymbols.ControlStructure
         {
             Type = CompilerSymbols.ControlStructure.StructureType.For,
             StartLine = context.Start.Line,
             EndLine = context.Stop.Line,
-            Condition = context.expression().First()?.GetText() ?? ""
+            Condition = context.expr().FirstOrDefault()?.GetText() ?? ""
         };
 
         _controlStructureStack.Push(structure);
         _currentFunction?.ControlStructures.Add(structure);
 
-        Visit(context.statement());
+        // Procesăm inițializarea
+        if (context.variableDecl() != null)
+            Visit(context.variableDecl());
+        else if (context.exprStatement() != null)
+            Visit(context.exprStatement());
+
+        Visit(context.block());
 
         _controlStructureStack.Pop();
         return _symbols;
     }
 
-    public override CompilerSymbols VisitFunctionCall([NotNull] myGrammarParser.FunctionCallContext context)
+    public override CompilerSymbols VisitExpr([NotNull] BasicLanguageParser.ExprContext context)
     {
-        var functionName = context.IDENTIFIER().GetText();
-
-        // Check if function exists
-        if (!_symbols.Functions.Any(f => f.Name == functionName))
+        if (context.assignmentExpr() != null)
         {
-            AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
-                    $"Call to undefined function: {functionName}");
-        }
-
-        // Validate argument count if function exists
-        var calledFunction = _symbols.Functions.FirstOrDefault(f => f.Name == functionName);
-        if (calledFunction != null)
-        {
-            var expectedArgs = calledFunction.Parameters.Count;
-            var providedArgs = context.argumentList()?.expression().Length ?? 0;
-
-            if (expectedArgs != providedArgs)
+            var varName = context.assignmentExpr().IDENTIFIER().GetText();
+            if (!IsVariableDeclared(varName))
             {
                 AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
-                        $"Function {functionName} expects {expectedArgs} arguments but got {providedArgs}");
+                        $"Assignment to undeclared variable: {varName}");
+            }
+        }
+        else if (context.logicalExpr() != null)
+        {
+            ValidateExpression(context.logicalExpr());
+        }
+
+        return base.VisitExpr(context);
+    }
+
+    public override CompilerSymbols VisitPrimaryExpr([NotNull] BasicLanguageParser.PrimaryExprContext context)
+    {
+        if (context.IDENTIFIER() != null && context.expr() == null) // Not a function call
+        {
+            var varName = context.IDENTIFIER().GetText();
+            if (!IsVariableDeclared(varName))
+            {
+                AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
+                        $"Use of undeclared variable: {varName}");
+            }
+        }
+        else if (context.IDENTIFIER() != null) // Function call
+        {
+            var functionName = context.IDENTIFIER().GetText();
+            if (!_symbols.Functions.Any(f => f.Name == functionName))
+            {
+                AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
+                        $"Call to undefined function: {functionName}");
+            }
+
+            var calledFunction = _symbols.Functions.FirstOrDefault(f => f.Name == functionName);
+            if (calledFunction != null)
+            {
+                var expectedArgs = calledFunction.Parameters.Count;
+                var providedArgs = context.expr() != null ? 1 : 0;
+
+                if (expectedArgs != providedArgs)
+                {
+                    AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
+                            $"Function {functionName} expects {expectedArgs} arguments but got {providedArgs}");
+                }
             }
         }
 
-        return _symbols;
+        return base.VisitPrimaryExpr(context);
     }
 
-    private CompilerSymbols.Variable CreateVariable(myGrammarParser.TypeContext typeContext,
-                                                  string name, bool isGlobal, int line)
+    private CompilerSymbols.Variable CreateVariable(BasicLanguageParser.TypeContext typeContext, string name, bool isGlobal, int line)
     {
         return new CompilerSymbols.Variable
         {
@@ -234,7 +256,7 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
 
     private CompilerSymbols.Variable.Type ParseType(string typeText)
     {
-        return typeText switch
+        return typeText.ToLower() switch
         {
             "int" => CompilerSymbols.Variable.Type.Int,
             "float" => CompilerSymbols.Variable.Type.Float,
@@ -245,8 +267,7 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
         };
     }
 
-    private void ValidateInitialValue(CompilerSymbols.Variable variable,
-                                    myGrammarParser.ExpressionContext expression)
+    private void ValidateInitialValue(CompilerSymbols.Variable variable, BasicLanguageParser.ExprContext expression)
     {
         var value = expression.GetText();
 
@@ -279,8 +300,7 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
         }
     }
 
-    private void DetermineFunctionType(CompilerSymbols.Function function,
-                                     myGrammarParser.FunctionContext context)
+    private void DetermineFunctionType(CompilerSymbols.Function function, BasicLanguageParser.FunctionDeclContext context)
     {
         if (function.Name.ToLower() == "main")
         {
@@ -288,10 +308,9 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
         }
         else
         {
-            // Check for recursion by looking for self-calls in the function body
             var functionCalls = context.block()
-                .GetText()
-                .Count(c => c == function.Name[0]); // Simplified recursion check
+                .GetRuleContexts<BasicLanguageParser.PrimaryExprContext>()
+                .Count(fc => fc.IDENTIFIER()?.GetText() == function.Name);
 
             function.Type = functionCalls > 0 ?
                 CompilerSymbols.Function.FunctionType.Recursive :
@@ -299,18 +318,32 @@ public class CompilerVisitor : myGrammarBaseVisitor<CompilerSymbols>
         }
     }
 
+    private void ValidateExpression(BasicLanguageParser.LogicalExprContext context)
+    {
+        foreach (var identifier in context.GetTokens(BasicLanguageParser.IDENTIFIER))
+        {
+            if (!IsVariableDeclared(identifier.GetText())) // Utilizare GetText()
+            {
+                AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
+                        $"Use of undeclared variable: {identifier.GetText()}"); // Utilizare GetText()
+            }
+        }
+    }
+
+
     private void ValidateProgram()
     {
-        // Check for main function
         if (!_symbols.Functions.Any(f => f.Name.ToLower() == "main"))
         {
             AddError(CompilerError.ErrorType.Semantic, 0, "No main function found in program");
         }
+    }
 
-        // Check for undefined variable references
-        // This would require additional context tracking during visits
-
-        // Additional program-wide validations can be added here
+    private bool IsVariableDeclared(string name)
+    {
+        return _symbols.GlobalVariables.Any(v => v.Name == name) ||
+               (_currentFunction?.LocalVariables.Any(v => v.Name == name) ?? false) ||
+               (_currentFunction?.Parameters.Any(p => p.Name == name) ?? false);
     }
 
     private void AddError(CompilerError.ErrorType type, int line, string message)

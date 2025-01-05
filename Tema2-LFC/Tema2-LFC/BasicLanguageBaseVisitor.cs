@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from myGrammar.g4 by ANTLR 4.13.2
+// Generated from BasicLanguage.g4 by ANTLR 4.13.2
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -25,7 +25,7 @@ using IToken = Antlr4.Runtime.IToken;
 using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 
 /// <summary>
-/// This class provides an empty implementation of <see cref="ImyGrammarVisitor{Result}"/>,
+/// This class provides an empty implementation of <see cref="IBasicLanguageVisitor{Result}"/>,
 /// which can be extended to create a visitor which only needs to handle a subset
 /// of the available methods.
 /// </summary>
@@ -33,9 +33,9 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.13.2")]
 [System.Diagnostics.DebuggerNonUserCode]
 [System.CLSCompliant(false)]
-public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, ImyGrammarVisitor<Result> {
+public partial class BasicLanguageBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IBasicLanguageVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.program"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.program"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -43,9 +43,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitProgram([NotNull] myGrammarParser.ProgramContext context) { return VisitChildren(context); }
+	public virtual Result VisitProgram([NotNull] BasicLanguageParser.ProgramContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.globalVariable"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.globalVariableDecl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -53,9 +53,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitGlobalVariable([NotNull] myGrammarParser.GlobalVariableContext context) { return VisitChildren(context); }
+	public virtual Result VisitGlobalVariableDecl([NotNull] BasicLanguageParser.GlobalVariableDeclContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.function"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.functionDecl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -63,9 +63,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFunction([NotNull] myGrammarParser.FunctionContext context) { return VisitChildren(context); }
+	public virtual Result VisitFunctionDecl([NotNull] BasicLanguageParser.FunctionDeclContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.parameterList"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.paramList"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -73,9 +73,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitParameterList([NotNull] myGrammarParser.ParameterListContext context) { return VisitChildren(context); }
+	public virtual Result VisitParamList([NotNull] BasicLanguageParser.ParamListContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.parameter"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.param"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -83,9 +83,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitParameter([NotNull] myGrammarParser.ParameterContext context) { return VisitChildren(context); }
+	public virtual Result VisitParam([NotNull] BasicLanguageParser.ParamContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.block"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.block"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -93,9 +93,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitBlock([NotNull] myGrammarParser.BlockContext context) { return VisitChildren(context); }
+	public virtual Result VisitBlock([NotNull] BasicLanguageParser.BlockContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.statement"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.statement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -103,9 +103,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitStatement([NotNull] myGrammarParser.StatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitStatement([NotNull] BasicLanguageParser.StatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.variableDeclaration"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.variableDecl"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -113,9 +113,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitVariableDeclaration([NotNull] myGrammarParser.VariableDeclarationContext context) { return VisitChildren(context); }
+	public virtual Result VisitVariableDecl([NotNull] BasicLanguageParser.VariableDeclContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.assignment"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.ifStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -123,9 +123,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAssignment([NotNull] myGrammarParser.AssignmentContext context) { return VisitChildren(context); }
+	public virtual Result VisitIfStatement([NotNull] BasicLanguageParser.IfStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.ifStatement"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.whileStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -133,9 +133,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitIfStatement([NotNull] myGrammarParser.IfStatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitWhileStatement([NotNull] BasicLanguageParser.WhileStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.whileStatement"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.forStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -143,9 +143,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitWhileStatement([NotNull] myGrammarParser.WhileStatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitForStatement([NotNull] BasicLanguageParser.ForStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.forStatement"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.returnStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -153,9 +153,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitForStatement([NotNull] myGrammarParser.ForStatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitReturnStatement([NotNull] BasicLanguageParser.ReturnStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.returnStatement"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.exprStatement"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -163,9 +163,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitReturnStatement([NotNull] myGrammarParser.ReturnStatementContext context) { return VisitChildren(context); }
+	public virtual Result VisitExprStatement([NotNull] BasicLanguageParser.ExprStatementContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.functionCall"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -173,9 +173,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitFunctionCall([NotNull] myGrammarParser.FunctionCallContext context) { return VisitChildren(context); }
+	public virtual Result VisitExpr([NotNull] BasicLanguageParser.ExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.argumentList"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.assignmentExpr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -183,9 +183,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitArgumentList([NotNull] myGrammarParser.ArgumentListContext context) { return VisitChildren(context); }
+	public virtual Result VisitAssignmentExpr([NotNull] BasicLanguageParser.AssignmentExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.logicalExpr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -193,9 +193,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitExpression([NotNull] myGrammarParser.ExpressionContext context) { return VisitChildren(context); }
+	public virtual Result VisitLogicalExpr([NotNull] BasicLanguageParser.LogicalExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.primary"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.relationalExpr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -203,9 +203,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitPrimary([NotNull] myGrammarParser.PrimaryContext context) { return VisitChildren(context); }
+	public virtual Result VisitRelationalExpr([NotNull] BasicLanguageParser.RelationalExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.type"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.additiveExpr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -213,9 +213,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitType([NotNull] myGrammarParser.TypeContext context) { return VisitChildren(context); }
+	public virtual Result VisitAdditiveExpr([NotNull] BasicLanguageParser.AdditiveExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.assignmentOperator"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.multiplicativeExpr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -223,9 +223,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAssignmentOperator([NotNull] myGrammarParser.AssignmentOperatorContext context) { return VisitChildren(context); }
+	public virtual Result VisitMultiplicativeExpr([NotNull] BasicLanguageParser.MultiplicativeExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.operator"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.unaryExpr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -233,9 +233,9 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitOperator([NotNull] myGrammarParser.OperatorContext context) { return VisitChildren(context); }
+	public virtual Result VisitUnaryExpr([NotNull] BasicLanguageParser.UnaryExprContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="myGrammarParser.unaryOperator"/>.
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.postfixExpr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -243,5 +243,45 @@ public partial class myGrammarBaseVisitor<Result> : AbstractParseTreeVisitor<Res
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitUnaryOperator([NotNull] myGrammarParser.UnaryOperatorContext context) { return VisitChildren(context); }
+	public virtual Result VisitPostfixExpr([NotNull] BasicLanguageParser.PostfixExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.primaryExpr"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitPrimaryExpr([NotNull] BasicLanguageParser.PrimaryExprContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.exprList"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitExprList([NotNull] BasicLanguageParser.ExprListContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.type"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitType([NotNull] BasicLanguageParser.TypeContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BasicLanguageParser.assignmentOp"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAssignmentOp([NotNull] BasicLanguageParser.AssignmentOpContext context) { return VisitChildren(context); }
 }

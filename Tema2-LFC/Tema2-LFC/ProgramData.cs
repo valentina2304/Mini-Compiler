@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class CompilerSymbols
 {
@@ -31,7 +28,6 @@ public class CompilerSymbols
             Main,
             Recursive
         }
-
         public Variable.Type ReturnType { get; set; }
         public string Name { get; set; }
         public FunctionType Type { get; set; }
@@ -50,7 +46,6 @@ public class CompilerSymbols
             While,
             For
         }
-
         public StructureType Type { get; set; }
         public int StartLine { get; set; }
         public int EndLine { get; set; }
@@ -60,6 +55,7 @@ public class CompilerSymbols
     public List<Variable> GlobalVariables { get; set; } = new();
     public List<Function> Functions { get; set; } = new();
     public List<CompilerError> Errors { get; set; } = new();
+    public List<Token> Tokens { get; set; } = new();
 }
 
 public class CompilerError
@@ -70,8 +66,14 @@ public class CompilerError
         Syntactic,
         Semantic
     }
-
     public ErrorType Type { get; set; }
     public int Line { get; set; }
     public string Message { get; set; }
+}
+
+public class Token
+{
+    public string Text { get; set; }
+    public string Type { get; set; }
+    public int Line { get; set; }
 }
