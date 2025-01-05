@@ -175,7 +175,6 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
         _controlStructureStack.Push(structure);
         _currentFunction?.ControlStructures.Add(structure);
 
-        // Procesăm inițializarea
         if (context.variableDecl() != null)
             Visit(context.variableDecl());
         else if (context.exprStatement() != null)
@@ -216,8 +215,8 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
         {
             var name = context.IDENTIFIER().GetText();
 
-            // Verificăm apelurile de funcții
-            if (context.LPAREN() != null)  // Verificăm dacă este apel de funcție (are paranteze)
+           
+            if (context.LPAREN() != null)  
             {
                 if (!IsFunctionDeclared(name))
                 {
@@ -237,7 +236,7 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
                     }
                 }
             }
-            // Verificăm variabilele
+    
             else if (!IsVariableDeclared(name) && !IsFunctionDeclared(name))
             {
                 AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
@@ -273,7 +272,7 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
 
     private void ValidateInitialValue(CompilerSymbols.Variable variable, BasicLanguageParser.ExprContext expression)
     {
-        // Pentru expresii complexe, doar verificăm dacă variabilele folosite există
+    
         if (expression.GetText().Contains("+") ||
             expression.GetText().Contains("-") ||
             expression.GetText().Contains("*") ||
@@ -337,10 +336,8 @@ public class CompilerVisitor : BasicLanguageBaseVisitor<CompilerSymbols>
         {
             var name = identifier.GetText();
 
-            // Verificăm dacă este nume de funcție
             bool isFunction = _symbols.Functions.Any(f => f.Name == name);
 
-            // Dacă nu este funcție, verificăm dacă este variabilă declarată
             if (!isFunction && !IsVariableDeclared(name))
             {
                 AddError(CompilerError.ErrorType.Semantic, context.Start.Line,
