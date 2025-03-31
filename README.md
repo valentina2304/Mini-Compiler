@@ -28,7 +28,7 @@ Installation & Setup
 
 Clone the repository:
 
-git clone https://github.com/your-repo/mini-compiler.git
+git clone https://github.com/valentina2304/Mini-Compiler.git
 
 Install ANTLR via NuGet:
 
