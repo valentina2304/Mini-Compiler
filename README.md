@@ -63,3 +63,9 @@ Add optimization passes.
 Implement bytecode generation.
 
 Extend language features.
+
+
+Authors:
+
+Lixandru Valentina-Mariana
+Palatka Vanessa
